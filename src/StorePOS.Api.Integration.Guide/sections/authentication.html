@@ -1,0 +1,305 @@
+<!-- Authentication Section -->
+<section id="authentication" class="mb-16">
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8">
+    <h3 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white">🔐 Authentication</h3>
+    
+    <div class="mb-8">
+      <p class="text-gray-600 dark:text-gray-300 mb-4">
+        The StorePOS API uses JWT (JSON Web Token) authentication. You'll need to authenticate with your credentials to receive a token that must be included in subsequent API requests.
+      </p>
+      
+      <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg p-4 mb-6">
+        <h4 class="text-lg font-semibold text-blue-800 dark:text-blue-200 mb-2">🚀 Quick Start</h4>
+        <ul class="text-blue-700 dark:text-blue-300 text-sm space-y-1">
+          <li>• Send POST request to <code class="bg-blue-100 dark:bg-blue-800 px-2 py-1 rounded text-blue-800 dark:text-blue-200">/api/auth/login</code></li>
+          <li>• Include email and password in request body</li>
+          <li>• Receive JWT token in response</li>
+          <li>• Include token in Authorization header for all subsequent requests</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- API Endpoint Details -->
+    <div class="mb-8">
+      <h4 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">📡 Authentication Endpoint</h4>
+      <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
+        <div class="flex items-center space-x-4 mb-2">
+          <span class="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-3 py-1 rounded-full text-sm font-medium">POST</span>
+          <code class="text-gray-800 dark:text-gray-200 font-mono">/api/auth/login</code>
+        </div>
+        <p class="text-gray-600 dark:text-gray-400 text-sm">Authenticate user and receive JWT token</p>
+      </div>
+    </div>
+
+    <!-- Request/Response Format -->
+    <div class="mb-8">
+      <h4 class="text-lg font-semibold mb-4 dark:text-white">📋 Request & Response Format</h4>
+      
+      <div class="code-block bg-gray-900 grid md:grid-cols-2 gap-6 p-4">
+        <!-- Request -->
+        <div>
+          <h5 class="font-medium mb-2 dark:text-white">Request Body:</h5>
+          <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code class="language-json">{
+  "email": "admin@example.com",
+  "password": "Admin123!"
+}</code></pre>
+        </div>
+        
+        <!-- Response -->
+        <div>
+          <h5 class="font-medium mb-2 dark:text-white">Response:</h5>
+          <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code class="language-json">{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "expiresAt": "2025-08-21T10:30:00Z",
+  "user": {
+    "id": 1,
+    "email": "admin@example.com",
+    "role": "Admin"
+  }
+}</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Language Sample Card -->
+    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 border border-gray-200 dark:border-gray-600">
+      <h4 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">💻 Code Examples</h4>
+      
+      <!-- Language Tabs -->
+      <div class="flex flex-wrap gap-2 mb-4 border-b border-gray-200 dark:border-gray-600">
+        <button onclick="showLanguageTab('authentication', 'powershell')" 
+          class="language-tab active px-4 py-2 text-sm font-medium rounded-t-lg border-b-2 border-blue-500 text-blue-600 dark:text-blue-400"
+          data-section="authentication" data-lang="powershell">
+          PowerShell
+        </button>
+        <button onclick="showLanguageTab('authentication', 'csharp')" 
+          class="language-tab px-4 py-2 text-sm font-medium rounded-t-lg border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+          data-section="authentication" data-lang="csharp">
+          C#
+        </button>
+        <button onclick="showLanguageTab('authentication', 'javascript')" 
+          class="language-tab px-4 py-2 text-sm font-medium rounded-t-lg border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+          data-section="authentication" data-lang="javascript">
+          JavaScript
+        </button>
+        <button onclick="showLanguageTab('authentication', 'python')" 
+          class="language-tab px-4 py-2 text-sm font-medium rounded-t-lg border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+          data-section="authentication" data-lang="python">
+          Python
+        </button>
+      </div>
+      
+      <!-- Code Samples -->
+      <div class="language-content">
+        <!-- PowerShell -->
+        <div id="authentication-powershell" class="language-sample active">
+          <pre class="code-block bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto"><code class="language-powershell"># StorePOS API Authentication Example
+$apiUrl = "http://localhost:5062/api"
+$loginData = @{
+    Email = "admin@example.com"
+    Password = "Admin123!"
+} | ConvertTo-Json
+
+$headers = @{
+    "Content-Type" = "application/json"
+}
+
+try {
+    $response = Invoke-RestMethod -Uri "$apiUrl/auth/login" -Method POST -Body $loginData -Headers $headers
+    $token = $response.token
+    Write-Host "✅ Authentication successful!"
+    Write-Host "Token: $token"
+    
+    # Store token for subsequent requests
+    $global:StorePOSToken = $token
+} catch {
+    Write-Error "❌ Authentication failed: $($_.Exception.Message)"
+}</code></pre>
+        </div>
+
+        <!-- C# -->
+        <div id="authentication-csharp" class="language-sample hidden">
+          <pre class="code-block bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto"><code class="language-csharp">// StorePOS API Authentication Example
+using System.Text.Json;
+using System.Text;
+
+public class AuthService
+{
+    private readonly HttpClient _httpClient;
+    private readonly string _baseUrl = "http://localhost:5062/api";
+
+    public AuthService()
+    {
+        _httpClient = new HttpClient();
+    }
+
+    public async Task&lt;string&gt; LoginAsync(string email, string password)
+    {
+        var loginData = new { Email = email, Password = password };
+        var json = JsonSerializer.Serialize(loginData);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        try
+        {
+            var response = await _httpClient.PostAsync($"{_baseUrl}/auth/login", content);
+            response.EnsureSuccessStatusCode();
+            
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonSerializer.Deserialize&lt;AuthResponse&gt;(responseContent);
+            
+            Console.WriteLine("✅ Authentication successful!");
+            return result.Token;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"❌ Authentication failed: {ex.Message}");
+            throw;
+        }
+    }
+}
+
+public class AuthResponse
+{
+    public string Token { get; set; }
+    public DateTime ExpiresAt { get; set; }
+    public User User { get; set; }
+}</code></pre>
+        </div>
+
+        <!-- JavaScript -->
+        <div id="authentication-javascript" class="language-sample hidden">
+          <pre class="code-block bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto"><code class="language-javascript">// StorePOS API Authentication Example
+class StorePOSAuth {
+    constructor() {
+        this.baseUrl = 'http://localhost:5062/api';
+        this.token = null;
+    }
+
+    async login(email, password) {
+        try {
+            const response = await fetch(`${this.baseUrl}/auth/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            this.token = data.token;
+            
+            console.log('✅ Authentication successful!');
+            console.log('Token:', this.token);
+            
+            // Store token in localStorage for persistence
+            localStorage.setItem('storepos_token', this.token);
+            
+            return this.token;
+        } catch (error) {
+            console.error('❌ Authentication failed:', error.message);
+            throw error;
+        }
+    }
+
+    getAuthHeaders() {
+        return {
+            'Authorization': `Bearer ${this.token}`,
+            'Content-Type': 'application/json'
+        };
+    }
+}</code></pre>
+        </div>
+
+        <!-- Python -->
+        <div id="authentication-python" class="language-sample hidden">
+          <pre class="code-block bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto"><code class="language-python"># StorePOS API Authentication Example
+import requests
+import json
+from typing import Optional
+
+class StorePOSAuth:
+    def __init__(self):
+        self.base_url = "http://localhost:5062/api"
+        self.token: Optional[str] = None
+        
+    def login(self, email: str, password: str) -> str:
+        """Authenticate with the StorePOS API"""
+        login_data = {
+            "email": email,
+            "password": password
+        }
+        
+        try:
+            response = requests.post(
+                f"{self.base_url}/auth/login",
+                json=login_data,
+                headers={"Content-Type": "application/json"}
+            )
+            response.raise_for_status()
+            
+            data = response.json()
+            self.token = data["token"]
+            
+            print("✅ Authentication successful!")
+            print(f"Token: {self.token}")
+            
+            return self.token
+            
+        except requests.exceptions.RequestException as e:
+            print(f"❌ Authentication failed: {e}")
+            raise
+    
+    def get_auth_headers(self) -> dict:
+        """Get headers with authentication token"""
+        if not self.token:
+            raise ValueError("Not authenticated. Call login() first.")
+        
+        return {
+            "Authorization": f"Bearer {self.token}",
+            "Content-Type": "application/json"
+        }
+
+# Usage example
+auth = StorePOSAuth()
+token = auth.login("admin@example.com", "Admin123!")</code></pre>
+        </div>
+      </div>
+      
+      <!-- Download Links -->
+      <div class="mt-4 flex flex-wrap gap-4">
+        <a href="./examples/powershell/authentication.ps1" download 
+          class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-medium">
+          📥 Download PowerShell
+        </a>
+        <a href="./examples/csharp/authentication.cs" download 
+          class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-medium">
+          📥 Download C#
+        </a>
+        <a href="./examples/javascript/authentication.js" download 
+          class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-medium">
+          📥 Download JavaScript
+        </a>
+        <a href="./examples/python/authentication.py" download 
+          class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-medium">
+          📥 Download Python
+        </a>
+      </div>
+    </div>
+
+    <!-- Security Best Practices -->
+    <div class="mt-8 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg p-4">
+      <h4 class="text-lg font-semibold text-yellow-800 dark:text-yellow-200 mb-2">🔒 Security Best Practices</h4>
+      <ul class="text-yellow-700 dark:text-yellow-300 text-sm space-y-1">
+        <li>• Never hardcode credentials in your source code</li>
+        <li>• Store tokens securely (environment variables, secure storage)</li>
+        <li>• Implement token refresh logic for long-running applications</li>
+        <li>• Use HTTPS in production environments</li>
+        <li>• Validate and handle authentication errors gracefully</li>
+      </ul>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,463 @@
+<!-- Products Section -->
+<section id="products" class="mb-16">
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8">
+    <h3 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white">🛍️ Products Management</h3>
+    
+    <div class="mb-8">
+      <p class="text-gray-600 dark:text-gray-300 mb-4">
+        The Products API allows you to manage your store's inventory, including creating, updating, deleting, and retrieving product information. All products operations require authentication.
+      </p>
+      
+      <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-lg p-4 mb-6">
+        <h4 class="text-lg font-semibold text-green-800 dark:text-green-200 mb-2">🎯 Available Operations</h4>
+        <ul class="text-green-700 dark:text-green-300 text-sm space-y-1">
+          <li>• Get all products with pagination and filtering</li>
+          <li>• Get product by ID with full details</li>
+          <li>• Create new products with validation</li>
+          <li>• Update existing product information</li>
+          <li>• Delete products and manage inventory</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- API Endpoints -->
+    <div class="mb-8">
+      <h4 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">📡 Product Endpoints</h4>
+      <div class="space-y-3">
+        <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
+          <div class="flex items-center space-x-4 mb-2">
+            <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-sm font-medium">GET</span>
+            <code class="text-gray-800 dark:text-gray-200 font-mono">/api/products</code>
+          </div>
+          <p class="text-gray-600 dark:text-gray-400 text-sm">Get all products with optional filtering and pagination</p>
+        </div>
+        
+        <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
+          <div class="flex items-center space-x-4 mb-2">
+            <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-sm font-medium">GET</span>
+            <code class="text-gray-800 dark:text-gray-200 font-mono">/api/products/{id}</code>
+          </div>
+          <p class="text-gray-600 dark:text-gray-400 text-sm">Get a specific product by ID</p>
+        </div>
+        
+        <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
+          <div class="flex items-center space-x-4 mb-2">
+            <span class="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-3 py-1 rounded-full text-sm font-medium">POST</span>
+            <code class="text-gray-800 dark:text-gray-200 font-mono">/api/products</code>
+          </div>
+          <p class="text-gray-600 dark:text-gray-400 text-sm">Create a new product</p>
+        </div>
+        
+        <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
+          <div class="flex items-center space-x-4 mb-2">
+            <span class="bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 px-3 py-1 rounded-full text-sm font-medium">PUT</span>
+            <code class="text-gray-800 dark:text-gray-200 font-mono">/api/products/{id}</code>
+          </div>
+          <p class="text-gray-600 dark:text-gray-400 text-sm">Update an existing product</p>
+        </div>
+        
+        <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
+          <div class="flex items-center space-x-4 mb-2">
+            <span class="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-3 py-1 rounded-full text-sm font-medium">DELETE</span>
+            <code class="text-gray-800 dark:text-gray-200 font-mono">/api/products/{id}</code>
+          </div>
+          <p class="text-gray-600 dark:text-gray-400 text-sm">Delete a product</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Language Sample Card -->
+    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 border border-gray-200 dark:border-gray-600">
+      <h4 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">💻 Code Examples</h4>
+      
+      <!-- Language Tabs -->
+      <div class="flex flex-wrap gap-2 mb-4 border-b border-gray-200 dark:border-gray-600">
+        <button onclick="showLanguageTab('products', 'powershell')" 
+          class="language-tab active px-4 py-2 text-sm font-medium rounded-t-lg border-b-2 border-blue-500 text-blue-600 dark:text-blue-400"
+          data-section="products" data-lang="powershell">
+          PowerShell
+        </button>
+        <button onclick="showLanguageTab('products', 'csharp')" 
+          class="language-tab px-4 py-2 text-sm font-medium rounded-t-lg border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+          data-section="products" data-lang="csharp">
+          C#
+        </button>
+        <button onclick="showLanguageTab('products', 'javascript')" 
+          class="language-tab px-4 py-2 text-sm font-medium rounded-t-lg border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+          data-section="products" data-lang="javascript">
+          JavaScript
+        </button>
+        <button onclick="showLanguageTab('products', 'python')" 
+          class="language-tab px-4 py-2 text-sm font-medium rounded-t-lg border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+          data-section="products" data-lang="python">
+          Python
+        </button>
+      </div>
+      
+      <!-- Code Samples -->
+      <div class="language-content">
+        <!-- PowerShell -->
+        <div id="products-powershell" class="language-sample active">
+          <pre class="code-block bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto"><code class="language-powershell"># StorePOS API Products Example
+$token = $global:StorePOSToken  # From authentication
+$apiUrl = "http://localhost:5062/api"
+
+$headers = @{
+    "Authorization" = "Bearer $token"
+    "Content-Type" = "application/json"
+}
+
+# Get all products
+try {
+    $products = Invoke-RestMethod -Uri "$apiUrl/products" -Method GET -Headers $headers
+    Write-Host "✅ Found $($products.Count) products"
+    
+    # Create new product
+    $newProduct = @{
+        Name = "Sample Product"
+        Description = "A sample product for testing"
+        Price = 19.99
+        Stock = 100
+        CategoryId = 1
+        Sku = "SAMPLE-001"
+    } | ConvertTo-Json
+    
+    $createdProduct = Invoke-RestMethod -Uri "$apiUrl/products" -Method POST -Body $newProduct -Headers $headers
+    Write-Host "✅ Product created with ID: $($createdProduct.Id)"
+    
+    # Update product stock
+    $updateData = @{
+        Stock = 150
+    } | ConvertTo-Json
+    
+    $updatedProduct = Invoke-RestMethod -Uri "$apiUrl/products/$($createdProduct.Id)" -Method PUT -Body $updateData -Headers $headers
+    Write-Host "✅ Product stock updated to: $($updatedProduct.Stock)"
+    
+} catch {
+    Write-Error "❌ Products operation failed: $($_.Exception.Message)"
+}</code></pre>
+        </div>
+
+        <!-- C# -->
+        <div id="products-csharp" class="language-sample hidden">
+          <pre class="code-block bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto"><code class="language-csharp">// StorePOS API Products Example
+public class ProductService
+{
+    private readonly HttpClient _httpClient;
+    private readonly string _baseUrl = "http://localhost:5062/api";
+
+    public ProductService(string token)
+    {
+        _httpClient = new HttpClient();
+        _httpClient.DefaultRequestHeaders.Authorization = 
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+    }
+
+    public async Task&lt;List&lt;Product&gt;&gt; GetProductsAsync()
+    {
+        try
+        {
+            var response = await _httpClient.GetAsync($"{_baseUrl}/products");
+            response.EnsureSuccessStatusCode();
+            
+            var json = await response.Content.ReadAsStringAsync();
+            var products = JsonSerializer.Deserialize&lt;List&lt;Product&gt;&gt;(json);
+            
+            Console.WriteLine($"✅ Found {products.Count} products");
+            return products;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"❌ Failed to get products: {ex.Message}");
+            throw;
+        }
+    }
+
+    public async Task&lt;Product&gt; CreateProductAsync(Product product)
+    {
+        try
+        {
+            var json = JsonSerializer.Serialize(product);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            
+            var response = await _httpClient.PostAsync($"{_baseUrl}/products", content);
+            response.EnsureSuccessStatusCode();
+            
+            var responseJson = await response.Content.ReadAsStringAsync();
+            var createdProduct = JsonSerializer.Deserialize&lt;Product&gt;(responseJson);
+            
+            Console.WriteLine($"✅ Product created with ID: {createdProduct.Id}");
+            return createdProduct;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"❌ Failed to create product: {ex.Message}");
+            throw;
+        }
+    }
+
+    public async Task&lt;Product&gt; UpdateProductAsync(int id, Product product)
+    {
+        try
+        {
+            var json = JsonSerializer.Serialize(product);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            
+            var response = await _httpClient.PutAsync($"{_baseUrl}/products/{id}", content);
+            response.EnsureSuccessStatusCode();
+            
+            var responseJson = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize&lt;Product&gt;(responseJson);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"❌ Failed to update product: {ex.Message}");
+            throw;
+        }
+    }
+}</code></pre>
+        </div>
+
+        <!-- JavaScript -->
+        <div id="products-javascript" class="language-sample hidden">
+          <pre class="code-block bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto"><code class="language-javascript">// StorePOS API Products Example
+class StorePOSProducts {
+    constructor(token) {
+        this.baseUrl = 'http://localhost:5062/api';
+        this.token = token;
+    }
+
+    async getProducts() {
+        try {
+            const response = await fetch(`${this.baseUrl}/products`, {
+                headers: {
+                    'Authorization': `Bearer ${this.token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const products = await response.json();
+            console.log(`✅ Found ${products.length} products`);
+            return products;
+        } catch (error) {
+            console.error('❌ Failed to get products:', error.message);
+            throw error;
+        }
+    }
+
+    async createProduct(product) {
+        try {
+            const response = await fetch(`${this.baseUrl}/products`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${this.token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(product)
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const createdProduct = await response.json();
+            console.log(`✅ Product created with ID: ${createdProduct.id}`);
+            return createdProduct;
+        } catch (error) {
+            console.error('❌ Failed to create product:', error.message);
+            throw error;
+        }
+    }
+
+    async updateProduct(id, updates) {
+        try {
+            const response = await fetch(`${this.baseUrl}/products/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${this.token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updates)
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const updatedProduct = await response.json();
+            console.log(`✅ Product updated: ${updatedProduct.name}`);
+            return updatedProduct;
+        } catch (error) {
+            console.error('❌ Failed to update product:', error.message);
+            throw error;
+        }
+    }
+
+    async deleteProduct(id) {
+        try {
+            const response = await fetch(`${this.baseUrl}/products/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${this.token}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            console.log(`✅ Product deleted successfully`);
+            return true;
+        } catch (error) {
+            console.error('❌ Failed to delete product:', error.message);
+            throw error;
+        }
+    }
+}</code></pre>
+        </div>
+
+        <!-- Python -->
+        <div id="products-python" class="language-sample hidden">
+          <pre class="code-block bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto"><code class="language-python"># StorePOS API Products Example
+import requests
+from typing import List, Dict, Optional
+
+class StorePOSProducts:
+    def __init__(self, token: str):
+        self.base_url = "http://localhost:5062/api"
+        self.headers = {
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json"
+        }
+    
+    def get_products(self) -> List[Dict]:
+        """Get all products"""
+        try:
+            response = requests.get(
+                f"{self.base_url}/products",
+                headers=self.headers
+            )
+            response.raise_for_status()
+            
+            products = response.json()
+            print(f"✅ Found {len(products)} products")
+            return products
+            
+        except requests.exceptions.RequestException as e:
+            print(f"❌ Failed to get products: {e}")
+            raise
+    
+    def create_product(self, product: Dict) -> Dict:
+        """Create a new product"""
+        try:
+            response = requests.post(
+                f"{self.base_url}/products",
+                json=product,
+                headers=self.headers
+            )
+            response.raise_for_status()
+            
+            created_product = response.json()
+            print(f"✅ Product created with ID: {created_product['id']}")
+            return created_product
+            
+        except requests.exceptions.RequestException as e:
+            print(f"❌ Failed to create product: {e}")
+            raise
+    
+    def update_product(self, product_id: int, updates: Dict) -> Dict:
+        """Update an existing product"""
+        try:
+            response = requests.put(
+                f"{self.base_url}/products/{product_id}",
+                json=updates,
+                headers=self.headers
+            )
+            response.raise_for_status()
+            
+            updated_product = response.json()
+            print(f"✅ Product updated: {updated_product['name']}")
+            return updated_product
+            
+        except requests.exceptions.RequestException as e:
+            print(f"❌ Failed to update product: {e}")
+            raise
+    
+    def delete_product(self, product_id: int) -> bool:
+        """Delete a product"""
+        try:
+            response = requests.delete(
+                f"{self.base_url}/products/{product_id}",
+                headers=self.headers
+            )
+            response.raise_for_status()
+            
+            print("✅ Product deleted successfully")
+            return True
+            
+        except requests.exceptions.RequestException as e:
+            print(f"❌ Failed to delete product: {e}")
+            raise
+
+# Usage example
+products_api = StorePOSProducts(token)
+all_products = products_api.get_products()
+
+new_product = {
+    "name": "Sample Product",
+    "description": "A sample product for testing",
+    "price": 19.99,
+    "stock": 100,
+    "categoryId": 1,
+    "sku": "SAMPLE-001"
+}
+created = products_api.create_product(new_product)</code></pre>
+        </div>
+      </div>
+      
+      <!-- Download Links -->
+      <div class="mt-4 flex flex-wrap gap-4">
+        <a href="./examples/powershell/products.ps1" download 
+          class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-medium">
+          📥 Download PowerShell
+        </a>
+        <a href="./examples/csharp/products.cs" download 
+          class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-medium">
+          📥 Download C#
+        </a>
+        <a href="./examples/javascript/products.js" download 
+          class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-medium">
+          📥 Download JavaScript
+        </a>
+        <a href="./examples/python/products.py" download 
+          class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-medium">
+          📥 Download Python
+        </a>
+      </div>
+    </div>
+
+    <!-- Product Schema -->
+    <div class="mt-8 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-700 rounded-lg p-4">
+      <h4 class="text-lg font-semibold text-purple-800 dark:text-purple-200 mb-3">📋 Product Schema</h4>
+      <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code class="language-json">{
+  "id": 1,
+  "name": "Product Name",
+  "description": "Product description",
+  "price": 19.99,
+  "stock": 100,
+  "categoryId": 1,
+  "category": {
+    "id": 1,
+    "name": "Category Name"
+  },
+  "sku": "PROD-001",
+  "createdAt": "2025-08-20T10:00:00Z",
+  "updatedAt": "2025-08-20T10:00:00Z"
+}</code></pre>
+    </div>
+  </div>
+</section>
