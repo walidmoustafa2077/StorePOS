@@ -21,12 +21,13 @@ namespace StorePOS.Domain.Services
         /// Authenticates a user with username/email and password, generating access and refresh tokens.
         /// </summary>
         /// <param name="loginDto">Login credentials containing username/email and password</param>
-        /// <param name="ipAddress">Client IP address for security auditing and session tracking</param>
+        /// <param name="ipAddress">Client IP address for security auditing and session tracking (required)</param>
         /// <param name="cancellationToken">Cancellation token for async operation</param>
         /// <returns>
         /// Authentication response containing success status, tokens, and user information.
         /// On failure, returns error message without sensitive information.
         /// </returns>
+        /// <exception cref="ArgumentException">Thrown when IP address is null, empty, or invalid</exception>
         /// <remarks>
         /// Security considerations:
         /// - Validates user credentials against stored password hash
@@ -34,6 +35,7 @@ namespace StorePOS.Domain.Services
         /// - Generates new refresh token and revokes old ones beyond security threshold
         /// - Logs authentication attempts for security monitoring
         /// - Returns generic error messages to prevent user enumeration attacks
+        /// - Requires valid IP address for audit trail and security compliance
         /// </remarks>
         Task<AuthResponseDto> LoginAsync(UserLoginDto loginDto, string? ipAddress = null, CancellationToken cancellationToken = default);
 
@@ -41,12 +43,13 @@ namespace StorePOS.Domain.Services
         /// Refreshes an expired access token using a valid refresh token, implementing token rotation.
         /// </summary>
         /// <param name="refreshToken">Valid refresh token from previous authentication</param>
-        /// <param name="ipAddress">Client IP address for security auditing</param>
+        /// <param name="ipAddress">Client IP address for security auditing (required)</param>
         /// <param name="cancellationToken">Cancellation token for async operation</param>
         /// <returns>
         /// New authentication response with fresh access and refresh tokens.
         /// On failure, returns error message and invalidates the provided refresh token.
         /// </returns>
+        /// <exception cref="ArgumentException">Thrown when IP address is null, empty, or invalid</exception>
         /// <remarks>
         /// Token rotation security:
         /// - Validates refresh token existence and expiration
@@ -54,6 +57,7 @@ namespace StorePOS.Domain.Services
         /// - Issues new refresh token and invalidates the old one
         /// - Tracks token usage for suspicious activity detection
         /// - Maintains session continuity while enhancing security posture
+        /// - Requires valid IP address for comprehensive audit trail
         /// </remarks>
         Task<AuthResponseDto> RefreshTokenAsync(string refreshToken, string? ipAddress = null, CancellationToken cancellationToken = default);
 
@@ -61,15 +65,17 @@ namespace StorePOS.Domain.Services
         /// Logs out a user by invalidating their specific refresh token session.
         /// </summary>
         /// <param name="refreshToken">The refresh token to invalidate</param>
-        /// <param name="ipAddress">Client IP address for security auditing</param>
+        /// <param name="ipAddress">Client IP address for security auditing (required)</param>
         /// <param name="cancellationToken">Cancellation token for async operation</param>
         /// <returns>True if logout was successful, false if token was not found</returns>
+        /// <exception cref="ArgumentException">Thrown when IP address is null, empty, or invalid</exception>
         /// <remarks>
         /// Single session logout:
         /// - Invalidates only the specific refresh token provided
         /// - Allows user to remain logged in on other devices/sessions
         /// - Updates token revocation timestamp for audit trails
         /// - Suitable for "logout from this device" scenarios
+        /// - Requires valid IP address for security compliance
         /// </remarks>
         Task<bool> LogoutAsync(string refreshToken, string? ipAddress = null, CancellationToken cancellationToken = default);
 

@@ -42,7 +42,10 @@ namespace StorePOS.Domain.Services
 
                 // Generate tokens
                 var accessToken = _tokenService.GenerateAccessToken(user);
-                var refreshToken = CreateRefreshToken(ipAddress);
+                var refreshToken = SecurityHelper.CreateRefreshToken(
+                    _tokenService.GenerateRefreshToken(), 
+                    ipAddress, 
+                    7); // TODO: Get from settings
                 
                 // Add refresh token to user
                 user.RefreshTokens.Add(refreshToken);
@@ -99,17 +102,6 @@ namespace StorePOS.Domain.Services
         public async Task<bool> LogoutAllAsync(int userId, CancellationToken cancellationToken = default)
         {
             return await _tokenService.RevokeAllTokensAsync(userId, cancellationToken);
-        }
-
-        private RefreshToken CreateRefreshToken(string? ipAddress)
-        {
-            return new RefreshToken
-            {
-                Token = _tokenService.GenerateRefreshToken(),
-                ExpiresAt = DateTimeOffset.UtcNow.AddDays(7), // TODO: Get from settings
-                CreatedAt = DateTimeOffset.UtcNow,
-                CreatedByIp = ipAddress
-            };
         }
 
         private void RemoveOldRefreshTokens(User user)

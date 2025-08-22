@@ -73,12 +73,13 @@ namespace StorePOS.Domain.Services
         /// Refreshes an access token using a valid refresh token, implementing secure token rotation.
         /// </summary>
         /// <param name="refreshToken">The current refresh token to validate and exchange for new tokens</param>
-        /// <param name="ipAddress">Optional IP address for audit trail and security monitoring purposes</param>
+        /// <param name="ipAddress">Client IP address for audit trail and security monitoring (required)</param>
         /// <param name="cancellationToken">Cancellation token for async operation control and timeout handling</param>
         /// <returns>
         /// A new <see cref="AuthTokenDto"/> containing fresh access and refresh tokens with user information,
         /// or null if the provided refresh token is invalid, expired, or revoked
         /// </returns>
+        /// <exception cref="ArgumentException">Thrown when IP address is null, empty, or invalid</exception>
         /// <remarks>
         /// This method implements the secure token rotation pattern by:
         /// 1. Validating the provided refresh token exists and is active
@@ -92,7 +93,7 @@ namespace StorePOS.Domain.Services
         /// Security benefits:
         /// - Token rotation prevents replay attacks
         /// - Immediate revocation of old tokens
-        /// - Audit trail with IP address tracking
+        /// - Audit trail with IP address tracking (required for compliance)
         /// - Automatic cleanup of expired tokens
         /// - Transactional consistency for all operations
         /// 
@@ -106,8 +107,32 @@ namespace StorePOS.Domain.Services
         /// Revokes a specific refresh token, preventing its future use for token refresh operations.
         /// </summary>
         /// <param name="refreshToken">The refresh token to revoke and mark as inactive</param>
-        /// <param name="ipAddress">Optional IP address for audit trail purposes and security monitoring</param>
+        /// <param name="ipAddress">Client IP address for audit trail and security monitoring (required)</param>
         /// <param name="cancellationToken">Cancellation token for async operation control and timeout handling</param>
+        /// <returns>
+        /// True if the refresh token was found and successfully revoked,
+        /// false if the token was not found in the system
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when IP address is null, empty, or invalid</exception>
+        /// <remarks>
+        /// Token revocation process:
+        /// 1. Locates the refresh token in the database
+        /// 2. Marks the token as revoked with current timestamp
+        /// 3. Records the IP address performing the revocation
+        /// 4. Persists changes to the database immediately
+        /// 
+        /// Security considerations:
+        /// - Once revoked, tokens cannot be reactivated
+        /// - Revocation is immediate and irreversible
+        /// - Complete audit trail with IP address tracking (required)
+        /// - Supports compliance and security monitoring
+        /// - Used for logout operations and security responses
+        /// 
+        /// This method is typically called during:
+        /// - User-initiated logout operations
+        /// - Security incidents requiring token invalidation
+        /// - Administrative token management
+        /// </remarks>
         /// <returns>
         /// True if the token was successfully found and revoked, 
         /// false if the token was not found or was already inactive
