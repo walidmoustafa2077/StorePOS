@@ -7,6 +7,10 @@ using StorePOS.Domain.Models;
 
 namespace StorePOS.Domain.Services
 {
+    /// <summary>
+    /// Implementation of IUserService providing comprehensive user management operations for the Point-of-Sale system.
+    /// Handles user lifecycle, authentication validation, and profile management with proper security measures.
+    /// </summary>
     public class UserService : IUserService
     {
         private readonly IUnitOfWork _uow;
@@ -16,6 +20,7 @@ namespace StorePOS.Domain.Services
             _uow = uow;
         }
 
+        /// <inheritdoc />
         public Task<List<UserReadDto>> SearchAsync(string? q, CancellationToken ct = default)
         {
             var query = _uow.Users.Query();
@@ -37,6 +42,7 @@ namespace StorePOS.Domain.Services
                 .ToListAsync(ct);
         }
 
+        /// <inheritdoc />
         public Task<UserReadDto?> GetByIdAsync(int id, CancellationToken ct = default)
         {
             return _uow.Users.Query()
@@ -45,6 +51,7 @@ namespace StorePOS.Domain.Services
                 .FirstOrDefaultAsync(ct);
         }
 
+        /// <inheritdoc />
         public Task<UserReadDto?> GetByUsernameAsync(string username, CancellationToken ct = default)
         {
             if (string.IsNullOrWhiteSpace(username))
@@ -56,6 +63,7 @@ namespace StorePOS.Domain.Services
                 .FirstOrDefaultAsync(ct);
         }
 
+        /// <inheritdoc />
         public Task<UserReadDto?> GetByEmailAsync(string email, CancellationToken ct = default)
         {
             if (string.IsNullOrWhiteSpace(email))
@@ -67,6 +75,7 @@ namespace StorePOS.Domain.Services
                 .FirstOrDefaultAsync(ct);
         }
 
+        /// <inheritdoc />
         public async Task<ServiceResult<UserReadDto>> CreateAsync(UserCreateDto dto, CancellationToken ct = default)
         {
             var username = dto.Username?.Trim() ?? string.Empty;
@@ -109,6 +118,7 @@ namespace StorePOS.Domain.Services
             return ServiceResult<UserReadDto>.Created(userDto);
         }
 
+        /// <inheritdoc />
         public async Task<ServiceResult<UserReadDto>> UpdateAsync(int id, UserUpdateDto dto, CancellationToken ct = default)
         {
             var user = await _uow.Users.GetByIdAsync(id, false, ct);
@@ -145,6 +155,7 @@ namespace StorePOS.Domain.Services
             return ServiceResult<UserReadDto>.Ok(userDto);
         }
 
+        /// <inheritdoc />
         public async Task<ServiceResult<bool>> ChangePasswordAsync(int id, UserChangePasswordDto dto, CancellationToken ct = default)
         {
             var user = await _uow.Users.GetByIdAsync(id, false, ct);
@@ -170,6 +181,7 @@ namespace StorePOS.Domain.Services
             return ServiceResult<bool>.Ok(true);
         }
 
+        /// <inheritdoc />
         public async Task<ServiceResult<bool>> DeleteAsync(int id, CancellationToken ct = default)
         {
             var user = await _uow.Users.GetByIdAsync(id, false, ct);
@@ -182,6 +194,7 @@ namespace StorePOS.Domain.Services
             return ServiceResult<bool>.Ok(true);
         }
 
+        /// <inheritdoc />
         public async Task<ServiceResult<UserReadDto>> LoginAsync(UserLoginDto dto, CancellationToken ct = default)
         {
             if (string.IsNullOrWhiteSpace(dto.UsernameOrEmail))
@@ -213,6 +226,7 @@ namespace StorePOS.Domain.Services
             return ServiceResult<UserReadDto>.Ok(userDto);
         }
 
+        /// <inheritdoc />
         public async Task<ServiceResult<bool>> UpdateLastLoginAsync(int id, CancellationToken ct = default)
         {
             var user = await _uow.Users.GetByIdAsync(id, false, ct);

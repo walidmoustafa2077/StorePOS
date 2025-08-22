@@ -7,6 +7,10 @@ using StorePOS.Domain.Enums;
 
 namespace StorePOS.Domain.Services
 {
+    /// <summary>
+    /// Implementation of ISaleService providing comprehensive sales transaction management for the Point-of-Sale system.
+    /// Orchestrates the complete sales process including transaction processing, inventory integration, and business rule enforcement.
+    /// </summary>
     public class SaleService : ISaleService
     {
         private readonly IUnitOfWork _uow;
@@ -16,6 +20,7 @@ namespace StorePOS.Domain.Services
             _uow = uow;
         }
 
+        /// <inheritdoc />
         public Task<List<SaleReadDto>> SearchAsync(DateTimeOffset? from = null, DateTimeOffset? to = null, CancellationToken ct = default)
         {
             var query = _uow.Sales.Query()
@@ -40,6 +45,7 @@ namespace StorePOS.Domain.Services
                 .ToListAsync(ct);
         }
 
+        /// <inheritdoc />
         public async Task<SaleReadDto?> GetByIdAsync(int id, CancellationToken ct = default)
         {
             return await _uow.Sales.Query()
@@ -50,6 +56,7 @@ namespace StorePOS.Domain.Services
                 .FirstOrDefaultAsync(ct);
         }
 
+        /// <inheritdoc />
         public async Task<ServiceResult<SaleReadDto>> CreateAsync(SaleCreateDto dto, CancellationToken ct = default)
         {
             var errors = ValidateSaleCreate(dto);
@@ -122,6 +129,7 @@ namespace StorePOS.Domain.Services
             return ServiceResult<SaleReadDto>.Created(created!);
         }
 
+        /// <inheritdoc />
         public async Task<ServiceResult<SaleReadDto>> UpdateAsync(int id, SaleUpdateDto dto, CancellationToken ct = default)
         {
             var entity = await _uow.Sales.GetByIdAsync(id, asNoTracking: false, ct);
@@ -214,6 +222,7 @@ namespace StorePOS.Domain.Services
             return ServiceResult<SaleReadDto>.Ok(updated!);
         }
 
+        /// <inheritdoc />
         public async Task<ServiceResult<SaleReadDto>> CompleteSaleAsync(int saleId, CancellationToken ct = default)
         {
             var sale = await _uow.Sales.GetWithLinesAsync(saleId, includeProducts: true, ct);
@@ -258,6 +267,7 @@ namespace StorePOS.Domain.Services
             return ServiceResult<SaleReadDto>.Ok(updated!);
         }
 
+        /// <inheritdoc />
         public async Task<ServiceResult<SaleReadDto>> CancelSaleAsync(int saleId, CancellationToken ct = default)
         {
             var entity = await _uow.Sales.GetByIdAsync(saleId, asNoTracking: false, ct);
@@ -281,6 +291,7 @@ namespace StorePOS.Domain.Services
             return ServiceResult<SaleReadDto>.Ok(updated!);
         }
 
+        /// <inheritdoc />
         public async Task<ServiceResult<bool>> DeleteAsync(int id, CancellationToken ct = default)
         {
             var entity = await _uow.Sales.GetByIdAsync(id, asNoTracking: false, ct);

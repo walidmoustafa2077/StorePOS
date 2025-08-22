@@ -6,6 +6,10 @@ using StorePOS.Domain.Models;
 
 namespace StorePOS.Domain.Services
 {
+    /// <summary>
+    /// Implementation of IAuthService providing secure authentication operations for the Point-of-Sale system.
+    /// Coordinates user validation, token management, and security auditing.
+    /// </summary>
     public class AuthService : IAuthService
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -17,6 +21,7 @@ namespace StorePOS.Domain.Services
             _tokenService = tokenService;
         }
 
+        /// <inheritdoc />
         public async Task<AuthResponseDto> LoginAsync(UserLoginDto loginDto, string? ipAddress = null, CancellationToken cancellationToken = default)
         {
             try
@@ -64,6 +69,7 @@ namespace StorePOS.Domain.Services
             }
         }
 
+        /// <inheritdoc />
         public async Task<AuthResponseDto> RefreshTokenAsync(string refreshToken, string? ipAddress = null, CancellationToken cancellationToken = default)
         {
             try
@@ -83,11 +89,13 @@ namespace StorePOS.Domain.Services
             }
         }
 
+        /// <inheritdoc />
         public async Task<bool> LogoutAsync(string refreshToken, string? ipAddress = null, CancellationToken cancellationToken = default)
         {
             return await _tokenService.RevokeTokenAsync(refreshToken, ipAddress, cancellationToken);
         }
 
+        /// <inheritdoc />
         public async Task<bool> LogoutAllAsync(int userId, CancellationToken cancellationToken = default)
         {
             return await _tokenService.RevokeAllTokensAsync(userId, cancellationToken);

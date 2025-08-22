@@ -5,6 +5,10 @@ using StorePOS.Domain.Extensions;
 
 namespace StorePOS.Domain.Services
 {
+    /// <summary>
+    /// Implementation of IProductService providing comprehensive product management operations for the Point-of-Sale system.
+    /// Handles product catalog management, barcode operations, and inventory control with proper validation.
+    /// </summary>
     public class ProductService : IProductService
     {
         private readonly IUnitOfWork _uow;
@@ -14,6 +18,7 @@ namespace StorePOS.Domain.Services
             _uow = uow;
         }
 
+        /// <inheritdoc />
         public Task<List<ProductReadDto>> SearchAsync(string? q, CancellationToken ct)
         {
             var query = _uow.Products.Query()
@@ -35,6 +40,7 @@ namespace StorePOS.Domain.Services
                 .ToListAsync(ct);
         }
 
+        /// <inheritdoc />
         public Task<ProductReadDto?> GetByBarcodeAsync(string barcode, CancellationToken ct)
         {
             var trimmed = barcode?.Trim() ?? string.Empty;
@@ -45,6 +51,7 @@ namespace StorePOS.Domain.Services
                 .FirstOrDefaultAsync(ct);
         }
 
+        /// <inheritdoc />
         public async Task<ServiceResult<ProductReadDto>> CreateAsync(ProductCreateDto dto, CancellationToken ct)
         {
             var sku = dto.Sku?.Trim() ?? string.Empty;
@@ -92,6 +99,7 @@ namespace StorePOS.Domain.Services
             return ServiceResult<ProductReadDto>.Created(created);
         }
 
+        /// <inheritdoc />
         public async Task<ServiceResult<ProductReadDto>> UpdateAsync(int id, ProductUpdateDto dto, CancellationToken ct)
         {
             var entity = await _uow.Products.GetByIdAsync(id, asNoTracking: false, ct);
@@ -137,6 +145,7 @@ namespace StorePOS.Domain.Services
             return ServiceResult<ProductReadDto>.Ok(updated);
         }
 
+        /// <inheritdoc />
         public async Task<ServiceResult<ProductReadDto>> UpdateStockAsync(int id, ProductStockUpdateDto dto, CancellationToken ct)
         {
             var entity = await _uow.Products.GetByIdAsync(id, asNoTracking: false, ct);
@@ -169,6 +178,7 @@ namespace StorePOS.Domain.Services
             return ServiceResult<ProductReadDto>.Ok(updated);
         }
 
+        /// <inheritdoc />
         public async Task<ServiceResult<bool>> DeleteAsync(int id, CancellationToken ct)
         {
             var entity = await _uow.Products.GetByIdAsync(id, asNoTracking: false, ct);
