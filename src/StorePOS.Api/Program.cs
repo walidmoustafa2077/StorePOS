@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using StorePOS.Domain.Models;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -75,6 +76,32 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
+// Serve static files from docs directory
+var docsPath = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "..", "docs"));
+if (Directory.Exists(docsPath))
+{
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        FileProvider = new PhysicalFileProvider(docsPath),
+        RequestPath = "/docs",
+        ContentTypeProvider = new Microsoft.AspNetCore.StaticFiles.FileExtensionContentTypeProvider(new Dictionary<string, string>
+        {
+            { ".ps1", "text/plain" },
+            { ".cs", "text/plain" },
+            { ".py", "text/plain" },
+            { ".js", "text/javascript" },
+            { ".html", "text/html" },
+            { ".css", "text/css" },
+            { ".json", "application/json" },
+            { ".md", "text/markdown" }
+        })
+    });
+}
+else
+{
+    Console.WriteLine($"Docs directory not found at: {docsPath}");
+}
+
 app.UseHttpsRedirection();
 
 // Add Authentication & Authorization middleware
@@ -138,5 +165,8 @@ app.MapAuthEndpoints();
 app.MapProductEndpoints();
 app.MapSaleEndpoints();
 app.MapUserEndpoints();
+
+// Add a redirect from root docs to index.html
+app.MapGet("/docs", () => Results.Redirect("/docs/index.html"));
 
 app.Run();

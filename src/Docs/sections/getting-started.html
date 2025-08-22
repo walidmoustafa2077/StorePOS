@@ -1,0 +1,61 @@
+<!-- Getting Started Section -->
+<section id="getting-started" class="mb-16">
+  <div class="bg-white dark:bg-secondary-800 rounded-lg shadow-md p-8">
+    <h3 class="text-2xl font-bold mb-6 text-secondary-900 dark:text-white"><i class="fas fa-rocket mr-3"></i>Getting Started</h3>
+
+    <div class="grid md:grid-cols-2 gap-8">
+      <div>
+        <h4 class="text-lg font-semibold mb-4 text-secondary-800 dark:text-secondary-200"><i class="fas fa-play-circle mr-2"></i>Quick Start</h4>
+        <ol class="list-decimal list-inside space-y-2 text-secondary-600 dark:text-secondary-300">
+          <li>Start the StorePOS API server</li>
+          <li>Get your authentication credentials</li>
+          <li>Make your first API call</li>
+          <li>Explore the examples below</li>
+        </ol>
+      </div>
+
+      <div>
+        <h4 class="text-lg font-semibold mb-4 text-secondary-800 dark:text-secondary-200"><i class="fas fa-link mr-2"></i>API Base URL</h4>
+        <div class="bg-secondary-100 dark:bg-secondary-700 p-4 rounded-lg border border-secondary-200 dark:border-secondary-600">
+          <p class="font-mono text-sm text-secondary-800 dark:text-secondary-200">
+            <strong>Development:</strong> http://localhost:5062<br>
+            <strong>Production:</strong> https://your-domain.com
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-8 p-4 bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-700 rounded-lg">
+      <h4 class="font-semibold text-primary-800 dark:text-primary-200 mb-2"><i class="fas fa-lightbulb mr-2"></i>Pro Tip</h4>
+      <p class="text-primary-700 dark:text-primary-300">
+        Use the <a href="http://localhost:5062/swagger" target="_blank" class="underline hover:text-primary-800 dark:hover:text-primary-200">Swagger UI</a>
+        to explore the API interactively while reading this guide.
+      </p>
+    </div>
+
+    <!-- Quick Test Section -->
+    <div class="mt-8 p-6 bg-secondary-50 dark:bg-secondary-700 rounded-lg border border-secondary-200 dark:border-secondary-600">
+      <h4 class="text-lg font-semibold mb-4 text-secondary-800 dark:text-secondary-200"><i class="fas fa-vial mr-2"></i>Quick API Test</h4>
+      <p class="text-secondary-600 dark:text-secondary-300 mb-4">Test the API connection right from this guide:</p>
+      
+      <div class="flex gap-4 items-center">
+        <input 
+          type="text" 
+          id="api-test-url" 
+          value="http://localhost:5062" 
+          class="flex-1 px-3 py-2 border border-secondary-300 dark:border-secondary-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white dark:bg-secondary-800 text-secondary-900 dark:text-secondary-100"
+          placeholder="API Base URL"
+        >
+        <button 
+          onclick="testApiConnection()" 
+          class="bg-primary-600 hover:bg-primary-700 dark:bg-primary-700 dark:hover:bg-primary-800 text-white px-4 py-2 rounded-md font-medium transition-colors">
+          <i class="fas fa-plug mr-2"></i>Test Connection
+        </button>
+      </div>
+      
+      <div id="api-test-result" class="mt-4 hidden">
+        <!-- Results will be shown here -->
+      </div>
+    </div>
+  </div>
+</section>
