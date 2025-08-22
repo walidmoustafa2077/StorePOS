@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using StorePOS.Domain.Data.Repositories.Interfaces;
 using StorePOS.Domain.DTOs;
 using StorePOS.Domain.Extensions;
+using StorePOS.Domain.Helpers;
 using StorePOS.Domain.Models;
 
 namespace StorePOS.Domain.Services
@@ -158,25 +159,13 @@ namespace StorePOS.Domain.Services
         /// </remarks>
         private RefreshToken RotateRefreshToken(RefreshToken refreshToken, string? ipAddress)
         {
-            var newRefreshToken = CreateRefreshToken(ipAddress);
+            var newRefreshToken = SecurityHelper.CreateRefreshToken(
+                    GenerateRefreshToken(), 
+                    ipAddress, 
+                    7);
+                    
             RevokeRefreshToken(refreshToken, ipAddress, newRefreshToken.Token);
             return newRefreshToken;
-        }
-
-        /// <summary>
-        /// Creates a new refresh token with proper expiration and audit information.
-        /// </summary>
-        /// <param name="ipAddress">IP address for audit trail purposes</param>
-        /// <returns>A new RefreshToken entity ready for database storage</returns>
-        private RefreshToken CreateRefreshToken(string? ipAddress)
-        {
-            return new RefreshToken
-            {
-                Token = GenerateRefreshToken(),
-                ExpiresAt = DateTimeOffset.UtcNow.AddDays(_jwtSettings.RefreshTokenExpirationDays),
-                CreatedAt = DateTimeOffset.UtcNow,
-                CreatedByIp = ipAddress
-            };
         }
 
         /// <summary>

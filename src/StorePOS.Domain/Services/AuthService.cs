@@ -45,7 +45,7 @@ namespace StorePOS.Domain.Services
                 var refreshToken = SecurityHelper.CreateRefreshToken(
                     _tokenService.GenerateRefreshToken(), 
                     ipAddress, 
-                    7); // TODO: Get from settings
+                    7);
                 
                 // Add refresh token to user
                 user.RefreshTokens.Add(refreshToken);
