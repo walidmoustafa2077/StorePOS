@@ -6,10 +6,15 @@ using System.Linq.Expressions;
 
 namespace StorePOS.Domain.Repositories
 {
+    /// <summary>
+    /// Implementation of ISaleRepository providing Entity Framework-based data access for Sale entities.
+    /// Optimized for Point-of-Sale operations with efficient cart line loading strategies.
+    /// </summary>
     public class SaleRepository : GenericRepository<Sale>, ISaleRepository
     {
         public SaleRepository(AppDbContext db) : base(db) { }
 
+        /// <inheritdoc />
         public async Task<Sale?> GetWithLinesAsync(object id, bool includeProducts = false, CancellationToken ct = default)
         {
             IQueryable<Sale> query = _set.AsNoTracking();
@@ -28,6 +33,7 @@ namespace StorePOS.Domain.Repositories
             return await query.FirstOrDefaultAsync(s => EF.Property<object>(s, "Id")!.Equals(id), ct);
         }
 
+        /// <inheritdoc />
         public Task<List<Sale>> ListWithLinesAsync(Expression<Func<Sale, bool>>? predicate = null,
                                                    bool includeProducts = false,
                                                    CancellationToken ct = default)
