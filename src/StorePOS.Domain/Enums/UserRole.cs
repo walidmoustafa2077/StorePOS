@@ -4,6 +4,8 @@ namespace StorePOS.Domain.Enums
     {
         Cashier = 1,
         Manager = 2,
-        Admin = 3
+        Admin = 3,
+        Customer = 4,
+        Guest = 5
     }
 }
