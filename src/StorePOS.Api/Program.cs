@@ -167,6 +167,7 @@ app.MapSaleEndpoints();
 app.MapUserEndpoints();
 
 // Add a redirect from root docs to index.html
-app.MapGet("/docs", () => Results.Redirect("/docs/index.html"));
+app.MapGet("/docs", () => Results.Redirect("/docs/index.html"))
+    .ExcludeFromDescription();
 
 app.Run();
