@@ -4,9 +4,64 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StorePOS.Client.Wpf"
+        xmlns:helpers="clr-namespace:StorePOS.Client.Wpf.Helpers"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="StorePOS - Point of Sale System"
+        WindowStartupLocation="CenterScreen"
+        Style="{StaticResource MaterialDesignWindow}"
+        MinHeight="700"
+        MinWidth="900">
+    
+    <Grid helpers:FocusHelper.ClickToDefocus="True">
 
+        <!-- Main content area using MaterialDesign Card -->
+        <materialDesign:Card Margin="8"
+                             UniformCornerRadius="12"
+                             Effect="{StaticResource MaterialDesignElevationShadow2}">
+            <ContentControl Content="{Binding CurrentView}" />
+        </materialDesign:Card>
+
+        <!-- Dialog overlay -->
+        <Grid Visibility="{Binding IsDialogOpen, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Rectangle Fill="{DynamicResource MaterialDesignShadowBrush}"
+                       Opacity="0.5" />
+
+            <materialDesign:Card HorizontalAlignment="Center"
+                                 VerticalAlignment="Center"
+                                 UniformCornerRadius="16"
+                                 Effect="{StaticResource MaterialDesignShadowDepth3}">
+                <ContentControl Content="{Binding CurrentDialog}"
+                                Margin="16" />
+            </materialDesign:Card>
+        </Grid>
+
+        <!-- Loading overlay -->
+        <Grid Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Rectangle Fill="{DynamicResource MaterialDesignShadowBrush}"
+                       Opacity="0.5" />
+
+            <materialDesign:Card Width="120"
+                                 Height="120"
+                                 HorizontalAlignment="Center"
+                                 VerticalAlignment="Center"
+                                 UniformCornerRadius="20"
+                                 Effect="{StaticResource MaterialDesignShadowDepth3}">
+
+                <StackPanel HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                    <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                 IsIndeterminate="True"
+                                 Width="32"
+                                 Height="32"
+                                 Margin="12" />
+
+                    <TextBlock Text="Loading..."
+                               Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
+                               HorizontalAlignment="Center" />
+                </StackPanel>
+            </materialDesign:Card>
+        </Grid>
     </Grid>
+
 </Window>
