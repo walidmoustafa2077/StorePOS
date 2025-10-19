@@ -1,0 +1,493 @@
+<UserControl x:Class="StorePOS.Client.Wpf.MVVM.Views.HomeViews.SettingsViews.UsersSecuritySettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"
+             Background="Transparent">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled">
+        <StackPanel HorizontalAlignment="Stretch"
+                    Margin="12">
+            <!-- POS Layout Settings Card -->
+            <materialDesign:Card UniformCornerRadius="12"
+                                 Margin="0,0,0,20"
+                                 materialDesign:ElevationAssist.Elevation="Dp2">
+                <StackPanel Margin="24">
+                    <!-- Section Header -->
+                    <Grid Margin="0,0,0,20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Border Grid.Column="0"
+                                Background="#2196F3"
+                                CornerRadius="12"
+                                Width="48"
+                                Height="48"
+                                Margin="0,0,16,0">
+                            <materialDesign:PackIcon Kind="AccountMultiple"
+                                                   Width="28"
+                                                   Height="28"
+                                                   Foreground="White"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                        </Border>
+                        
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="User Management"
+                                      FontSize="18"
+                                      FontWeight="SemiBold"
+                                      Foreground="#2196F3"/>
+                            <TextBlock Text="Manage user accounts and permissions"
+                                      FontSize="12"
+                                      Opacity="0.6"
+                                      Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Users List -->
+                    <Border BorderBrush="{DynamicResource MaterialDesign.Brush.TextBox.Border}"
+                           BorderThickness="1"
+                           CornerRadius="8"
+                           MaxHeight="350"
+                           Margin="0,0,0,20">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding Users}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border BorderBrush="{DynamicResource MaterialDesign.Brush.TextBox.Border}"
+                                               BorderThickness="0,0,0,1"
+                                               Padding="16"
+                                               Background="Transparent">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Background" Value="{DynamicResource MaterialDesign.Brush.Selection}"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <Border Grid.Column="0"
+                                                       Background="#2196F3"
+                                                       CornerRadius="20"
+                                                       Width="40"
+                                                       Height="40"
+                                                       Margin="0,0,16,0">
+                                                    <materialDesign:PackIcon Kind="Account" 
+                                                                           Width="24" 
+                                                                           Height="24"
+                                                                           Foreground="White"
+                                                                           HorizontalAlignment="Center"
+                                                                           VerticalAlignment="Center"/>
+                                                </Border>
+
+                                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding FullName}" 
+                                                              FontWeight="SemiBold"
+                                                              FontSize="14"/>
+                                                    <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                                        <TextBlock Text="{Binding Role}" 
+                                                                  FontSize="12"
+                                                                  Opacity="0.7"
+                                                                  Margin="0,0,8,0"/>
+                                                        <TextBlock Text="•" 
+                                                                  FontSize="12"
+                                                                  Opacity="0.7"
+                                                                  Margin="0,0,8,0"/>
+                                                        <TextBlock Text="{Binding Email}" 
+                                                                  FontSize="12"
+                                                                  Opacity="0.7"/>
+                                                    </StackPanel>
+                                                </StackPanel>
+
+                                                <Border Grid.Column="2"
+                                                       Background="{Binding StatusColor}"
+                                                       CornerRadius="12"
+                                                       Padding="12,6"
+                                                       Margin="12,0"
+                                                       VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding Status}" 
+                                                              FontSize="11"
+                                                              FontWeight="SemiBold"
+                                                              Foreground="White"/>
+                                                </Border>
+
+                                                <StackPanel Grid.Column="3" 
+                                                           Orientation="Horizontal"
+                                                           VerticalAlignment="Center">
+                                                    <Button Style="{StaticResource MaterialDesignIconButton}"
+                                                           Command="{Binding DataContext.EditUserCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                           CommandParameter="{Binding}"
+                                                           ToolTip="Edit User"
+                                                           Margin="4,0">
+                                                        <materialDesign:PackIcon Kind="Pencil" Width="20" Height="20"/>
+                                                    </Button>
+                                                    <Button Style="{StaticResource MaterialDesignIconButton}"
+                                                           Command="{Binding DataContext.DeleteUserCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                           CommandParameter="{Binding}"
+                                                           ToolTip="Delete User"
+                                                           Foreground="#F44336"
+                                                           Margin="4,0">
+                                                        <materialDesign:PackIcon Kind="Delete" Width="20" Height="20"/>
+                                                    </Button>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Border>
+
+                    <!-- Add User Button -->
+                    <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                           Command="{Binding AddUserCommand}"
+                           Height="48"
+                           HorizontalAlignment="Stretch">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="AccountPlus" Width="20" Height="20" Margin="0,0,8,0"/>
+                            <TextBlock Text="Add New User" FontWeight="Medium"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </materialDesign:Card>
+
+            <!-- Security Settings Card -->
+            <materialDesign:Card UniformCornerRadius="12"
+                                Margin="0,0,0,20"
+                                materialDesign:ElevationAssist.Elevation="Dp2">
+                <StackPanel Margin="24">
+                    <!-- Section Header -->
+                    <Grid Margin="0,0,0,20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Border Grid.Column="0"
+                                Background="#4CAF50"
+                                CornerRadius="12"
+                                Width="48"
+                                Height="48"
+                                Margin="0,0,16,0">
+                            <materialDesign:PackIcon Kind="Shield"
+                                                   Width="28"
+                                                   Height="28"
+                                                   Foreground="White"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                        </Border>
+                        
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="Security Settings"
+                                      FontSize="18"
+                                      FontWeight="SemiBold"
+                                      Foreground="#4CAF50"/>
+                            <TextBlock Text="Configure authentication and password policies"
+                                      FontSize="12"
+                                      Opacity="0.6"
+                                      Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Require Login Toggle -->
+                    <Grid Margin="0,0,0,20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <ToggleButton Grid.Column="0"
+                                     Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                     IsChecked="{Binding RequireLogin}"
+                                     VerticalAlignment="Center"/>
+                        <StackPanel Grid.Column="1" Margin="16,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="Require Login on Startup" FontSize="14" FontWeight="Medium"/>
+                            <TextBlock Text="Users must login before accessing the application" FontSize="12" Opacity="0.6" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Session Timeout -->
+                    <TextBlock Text="Session Timeout (minutes)"
+                              FontSize="14"
+                              FontWeight="Medium"
+                              Margin="0,0,0,8"/>
+                    <ComboBox materialDesign:HintAssist.Hint="Select timeout duration"
+                             Style="{StaticResource MaterialDesignFilledComboBox}"
+                             ItemsSource="{Binding SessionTimeouts}"
+                             SelectedItem="{Binding SelectedSessionTimeout}"
+                             Margin="0,0,0,24"/>
+
+                    <!-- Password Requirements Section -->
+                    <TextBlock Text="Password Requirements"
+                              FontSize="15"
+                              FontWeight="SemiBold"
+                              Foreground="#4CAF50"
+                              Margin="0,0,0,16"/>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="12"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="12"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="12"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="12"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Minimum Length -->
+                        <ToggleButton Grid.Row="0" Grid.Column="0"
+                                     Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                     IsChecked="{Binding RequireMinLength}"
+                                     VerticalAlignment="Center"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1"
+                                  Text="Minimum 8 characters"
+                                  FontSize="13"
+                                  Margin="16,0,0,0"
+                                  VerticalAlignment="Center"/>
+
+                        <!-- Uppercase -->
+                        <ToggleButton Grid.Row="2" Grid.Column="0"
+                                     Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                     IsChecked="{Binding RequireUppercase}"
+                                     VerticalAlignment="Center"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1"
+                                  Text="Require uppercase letters"
+                                  FontSize="13"
+                                  Margin="16,0,0,0"
+                                  VerticalAlignment="Center"/>
+
+                        <!-- Lowercase -->
+                        <ToggleButton Grid.Row="4" Grid.Column="0"
+                                     Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                     IsChecked="{Binding RequireLowercase}"
+                                     VerticalAlignment="Center"/>
+                        <TextBlock Grid.Row="4" Grid.Column="1"
+                                  Text="Require lowercase letters"
+                                  FontSize="13"
+                                  Margin="16,0,0,0"
+                                  VerticalAlignment="Center"/>
+
+                        <!-- Numbers -->
+                        <ToggleButton Grid.Row="6" Grid.Column="0"
+                                     Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                     IsChecked="{Binding RequireNumbers}"
+                                     VerticalAlignment="Center"/>
+                        <TextBlock Grid.Row="6" Grid.Column="1"
+                                  Text="Require numbers"
+                                  FontSize="13"
+                                  Margin="16,0,0,0"
+                                  VerticalAlignment="Center"/>
+
+                        <!-- Special Characters -->
+                        <ToggleButton Grid.Row="8" Grid.Column="0"
+                                     Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                     IsChecked="{Binding RequireSpecialChars}"
+                                     VerticalAlignment="Center"/>
+                        <TextBlock Grid.Row="8" Grid.Column="1"
+                                  Text="Require special characters"
+                                  FontSize="13"
+                                  Margin="16,0,0,0"
+                                  VerticalAlignment="Center"/>
+                    </Grid>
+                </StackPanel>
+            </materialDesign:Card>
+
+            <!-- Access Control Card -->
+            <materialDesign:Card UniformCornerRadius="12"
+                                Margin="0,0,0,20"
+                                materialDesign:ElevationAssist.Elevation="Dp2">
+                <StackPanel Margin="24">
+                    <!-- Section Header -->
+                    <Grid Margin="0,0,0,20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Border Grid.Column="0"
+                                Background="#FF9800"
+                                CornerRadius="12"
+                                Width="48"
+                                Height="48"
+                                Margin="0,0,16,0">
+                            <materialDesign:PackIcon Kind="LockOutline"
+                                                   Width="28"
+                                                   Height="28"
+                                                   Foreground="White"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                        </Border>
+                        
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="Access Control"
+                                      FontSize="18"
+                                      FontWeight="SemiBold"
+                                      Foreground="#FF9800"/>
+                            <TextBlock Text="Configure role-based permissions and restrictions"
+                                      FontSize="12"
+                                      Opacity="0.6"
+                                      Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Access Control Toggles -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="16"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="16"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="16"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Enable RBAC -->
+                        <ToggleButton Grid.Row="0" Grid.Column="0"
+                                     Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                     IsChecked="{Binding EnableRBAC}"
+                                     VerticalAlignment="Center"/>
+                        <StackPanel Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="Enable Role-Based Access Control" FontSize="14" FontWeight="Medium"/>
+                            <TextBlock Text="Restrict features based on user roles and permissions" FontSize="12" Opacity="0.6" Margin="0,2,0,0"/>
+                        </StackPanel>
+
+                        <!-- Manager Approval for Refunds -->
+                        <ToggleButton Grid.Row="2" Grid.Column="0"
+                                     Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                     IsChecked="{Binding RequireManagerForRefunds}"
+                                     VerticalAlignment="Center"/>
+                        <StackPanel Grid.Row="2" Grid.Column="1" Margin="16,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="Require Manager Approval for Refunds" FontSize="14" FontWeight="Medium"/>
+                            <TextBlock Text="Cashiers must get manager approval to process refunds" FontSize="12" Opacity="0.6" Margin="0,2,0,0"/>
+                        </StackPanel>
+
+                        <!-- Manager Approval for Discounts -->
+                        <ToggleButton Grid.Row="4" Grid.Column="0"
+                                     Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                     IsChecked="{Binding RequireManagerForDiscounts}"
+                                     VerticalAlignment="Center"/>
+                        <StackPanel Grid.Row="4" Grid.Column="1" Margin="16,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="Require Manager Approval for Discounts" FontSize="14" FontWeight="Medium"/>
+                            <TextBlock Text="Cashiers must get manager approval for large discounts" FontSize="12" Opacity="0.6" Margin="0,2,0,0"/>
+                        </StackPanel>
+
+                        <!-- Log User Actions -->
+                        <ToggleButton Grid.Row="6" Grid.Column="0"
+                                     Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                     IsChecked="{Binding LogUserActions}"
+                                     VerticalAlignment="Center"/>
+                        <StackPanel Grid.Row="6" Grid.Column="1" Margin="16,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="Log All User Actions" FontSize="14" FontWeight="Medium"/>
+                            <TextBlock Text="Track all user activities for audit purposes" FontSize="12" Opacity="0.6" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </materialDesign:Card>
+
+            <!-- Audit & Activity Log Card -->
+            <materialDesign:Card UniformCornerRadius="12"
+                                materialDesign:ElevationAssist.Elevation="Dp2">
+                <StackPanel Margin="24">
+                    <!-- Section Header -->
+                    <Grid Margin="0,0,0,20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Border Grid.Column="0"
+                                Background="#9C27B0"
+                                CornerRadius="12"
+                                Width="48"
+                                Height="48"
+                                Margin="0,0,16,0">
+                            <materialDesign:PackIcon Kind="ClipboardTextClock"
+                                                   Width="28"
+                                                   Height="28"
+                                                   Foreground="White"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                        </Border>
+                        
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="Audit &amp; Activity Log"
+                                      FontSize="18"
+                                      FontWeight="SemiBold"
+                                      Foreground="#9C27B0"/>
+                            <TextBlock Text="Monitor and export user activity history"
+                                      FontSize="12"
+                                      Opacity="0.6"
+                                      Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Activity Log Retention -->
+                    <TextBlock Text="Activity Log Retention"
+                              FontSize="14"
+                              FontWeight="Medium"
+                              Margin="0,0,0,8"/>
+                    <ComboBox materialDesign:HintAssist.Hint="Select retention period"
+                             Style="{StaticResource MaterialDesignFilledComboBox}"
+                             ItemsSource="{Binding LogRetentionPeriods}"
+                             SelectedItem="{Binding SelectedLogRetentionPeriod}"
+                             Margin="0,0,0,24"/>
+
+                    <!-- Action Buttons -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Button Grid.Column="0"
+                                Style="{StaticResource MaterialDesignRaisedButton}"
+                                Command="{Binding ViewActivityLogCommand}"
+                                Background="#9C27B0"
+                                Height="48">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="FileDocumentOutline" Width="20" Height="20" Margin="0,0,8,0"/>
+                                <TextBlock Text="View Activity Log" FontWeight="Medium"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Grid.Column="2"
+                                Style="{StaticResource MaterialDesignOutlinedButton}"
+                                Command="{Binding ExportActivityLogCommand}"
+                                Height="48">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="FileExport" Width="20" Height="20" Margin="0,0,8,0"/>
+                                <TextBlock Text="Export Log" FontWeight="Medium"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                </StackPanel>
+            </materialDesign:Card>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

@@ -1,0 +1,446 @@
+﻿<UserControl x:Class="StorePOS.Client.Wpf.MVVM.Views.HomeViews.InventoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:converters="clr-namespace:StorePOS.Client.Wpf.Converters"
+             xmlns:behaviors="clr-namespace:StorePOS.Client.Wpf.Behaviors"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             mc:Ignorable="d"
+             d:DesignHeight="800"
+             d:DesignWidth="1200"
+             Background="{DynamicResource MaterialDesign.Brush.Background}">
+
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converters:ResponsiveColumnsConverter x:Key="ResponsiveColumnsConverter" 
+                                               MinColumnWidth="280" 
+                                               MinColumns="1" 
+                                               MaxColumns="6" />
+
+        <!-- Category Button Style -->
+        <Style x:Key="CategoryButtonStyle"
+               TargetType="Button"
+               BasedOn="{StaticResource MaterialDesignOutlinedButton}">
+            <Setter Property="Height"
+                    Value="40" />
+            <Setter Property="Margin"
+                    Value="4,0" />
+            <Setter Property="Padding"
+                    Value="16,8" />
+            <Setter Property="FontSize"
+                    Value="12" />
+            <Setter Property="FontWeight"
+                    Value="Medium" />
+        </Style>
+
+        <!-- Filter ComboBox Style -->
+        <Style x:Key="FilterComboBoxStyle"
+               TargetType="ComboBox"
+               BasedOn="{StaticResource MaterialDesignOutlinedComboBox}">
+            <Setter Property="Height"
+                    Value="40" />
+            <Setter Property="Margin"
+                    Value="8,0" />
+            <Setter Property="FontSize"
+                    Value="12" />
+            <Setter Property="MinWidth"
+                    Value="120" />
+        </Style>
+
+        <!-- DataGrid Cell Style -->
+        <Style x:Key="DataGridCellCenterStyle" TargetType="DataGridCell" BasedOn="{StaticResource MaterialDesignDataGridCell}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridCell">
+                        <Grid Background="{TemplateBinding Background}">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Header with Search and Actions -->
+        <materialDesign:Card Grid.Row="0"
+                             Margin="16,16,16,8"
+                             Padding="16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Search Bar -->
+                <TextBox Grid.Column="0"
+                         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                         materialDesign:HintAssist.Hint="Search inventory by name, SKU, brand..."
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         FontSize="14"
+                         Margin="0,0,16,0">
+                    <i:Interaction.Behaviors>
+                        <behaviors:SelectAllTextOnFocusBehavior />
+                    </i:Interaction.Behaviors>
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter"
+                                    Command="{Binding SearchCommand}" />
+                    </TextBox.InputBindings>
+                </TextBox>
+
+                <!-- Action Buttons -->
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal">
+                    <Button Style="{StaticResource MaterialDesignIconButton}"
+                            Command="{Binding ClearSearchCommand}"
+                            ToolTip="Clear Search"
+                            Margin="4,0">
+                        <materialDesign:PackIcon Kind="Close"
+                                                 Width="20"
+                                                 Height="20" />
+                    </Button>
+
+                    <Button Style="{StaticResource MaterialDesignOutlinedButton}"
+                            Command="{Binding PrintInventoryCommand}"
+                            Height="40"
+                            Padding="16,8"
+                            Margin="8,0">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Printer"
+                                                     Width="18"
+                                                     Height="18"
+                                                     Margin="0,0,8,0" />
+                            <TextBlock Text="Print" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                            Command="{Binding ExportInventoryCommand}"
+                            Height="40"
+                            Padding="16,8"
+                            Margin="8,0">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Export"
+                                                     Width="18"
+                                                     Height="18"
+                                                     Margin="0,0,8,0" />
+                            <TextBlock Text="Export" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </materialDesign:Card>
+
+        <!-- Filters -->
+        <materialDesign:Card Grid.Row="1"
+                             Margin="16,8"
+                             Padding="16">
+            <StackPanel>
+                <!-- Categories -->
+                <TextBlock Text="Categories"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,8" />
+                <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                              VerticalScrollBarVisibility="Disabled">
+                    <ItemsControl ItemsSource="{Binding Categories}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Command="{Binding DataContext.SelectCategoryCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        CommandParameter="{Binding}"
+                                        Margin="0,0,6,12">
+                                    <Button.Content>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Name}" />
+                                        </StackPanel>
+                                    </Button.Content>
+                                    <Button.Style>
+                                        <Style TargetType="Button"
+                                               BasedOn="{StaticResource CategoryButtonStyle}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsSelected}"
+                                                             Value="True">
+                                                    <Setter Property="Background"
+                                                            Value="{DynamicResource MaterialDesign.Brush.Primary}" />
+                                                    <Setter Property="Foreground"
+                                                            Value="{DynamicResource MaterialDesign.Brush.Primary.Foreground}" />
+                                                    <Setter Property="BorderBrush"
+                                                            Value="{DynamicResource MaterialDesign.Brush.Primary}" />
+                                                </DataTrigger>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding IsSelected}"
+                                                                   Value="True" />
+                                                        <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}"
+                                                                   Value="True" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Foreground"
+                                                            Value="{DynamicResource MaterialDesign.Brush.Primary.Dark}" />
+                                                </MultiDataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+                <!-- Additional Filters -->
+                <Grid Margin="0,16,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox Grid.Column="0"
+                              ItemsSource="{Binding PriceRanges}"
+                              SelectedItem="{Binding SelectedPriceRange}"
+                              Style="{StaticResource FilterComboBoxStyle}"
+                              Padding="8 2"
+                              materialDesign:HintAssist.Hint="Price Range" />
+
+                    <ComboBox Grid.Column="1"
+                              ItemsSource="{Binding StockStatuses}"
+                              SelectedItem="{Binding SelectedStockStatus}"
+                              Style="{StaticResource FilterComboBoxStyle}"
+                              Padding="8 2"
+                              materialDesign:HintAssist.Hint="Stock Status" />
+
+                    <CheckBox Grid.Column="2"
+                              IsChecked="{Binding ShowActiveOnly}"
+                              Content="Active Only"
+                              Margin="16,8"
+                              Padding="8 2"
+                              VerticalAlignment="Center" />
+
+                    <Button Grid.Column="4"
+                            Style="{StaticResource MaterialDesignOutlinedButton}"
+                            Command="{Binding ClearFiltersCommand}"
+                            Height="36"
+                            Padding="16,8">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="FilterRemove"
+                                                     Width="16"
+                                                     Height="16"
+                                                     Margin="0,0,8,0" />
+                            <TextBlock Text="Clear Filters" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </StackPanel>
+        </materialDesign:Card>
+
+        <!-- Inventory DataGrid -->
+        <materialDesign:Card Grid.Row="2"
+                             Margin="16,8,16,16"
+                             Padding="12">
+
+            <DataGrid x:Name="InventoryDataGrid"
+                      ItemsSource="{Binding FilteredProducts}"
+                      SelectedItem="{Binding SelectedProduct}"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      SelectionMode="Single"
+                      SelectionUnit="FullRow"
+                      IsReadOnly="True"
+                      HeadersVisibility="All"
+                      GridLinesVisibility="Horizontal"
+                      materialDesign:DataGridAssist.CellPadding="8"
+                      materialDesign:DataGridAssist.ColumnHeaderPadding="10"
+                      AlternatingRowBackground="{DynamicResource MaterialDesign.Brush.Background.Light}"
+                      EnableRowVirtualization="True"
+                      EnableColumnVirtualization="True"
+                      VirtualizingPanel.IsVirtualizing="True"
+                      VirtualizingPanel.VirtualizationMode="Recycling">
+
+                <DataGrid.Columns>
+                    <!-- SKU Column -->
+                    <DataGridTextColumn Header="SKU"
+                                        Binding="{Binding SKU}"
+                                        Width="120"
+                                        ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}">
+                        <DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="DataGridColumnHeader"
+                                   BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
+                                <Setter Property="FontWeight"
+                                        Value="SemiBold" />
+                            </Style>
+                        </DataGridTextColumn.HeaderStyle>
+                    </DataGridTextColumn>
+
+                    <!-- Product Name Column -->
+                    <DataGridTextColumn Header="Product Name"
+                                        Binding="{Binding Name}"
+                                        Width="*"
+                                        MinWidth="200"
+                                        ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}">
+                        <DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="DataGridColumnHeader"
+                                   BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
+                                <Setter Property="FontWeight"
+                                        Value="SemiBold" />
+                            </Style>
+                        </DataGridTextColumn.HeaderStyle>
+                    </DataGridTextColumn>
+
+                    <!-- Brand Column -->
+                    <DataGridTextColumn Header="Brand"
+                                        Binding="{Binding Brand}"
+                                        Width="150"
+                                        ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}">
+                        <DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="DataGridColumnHeader"
+                                   BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
+                                <Setter Property="FontWeight"
+                                        Value="SemiBold" />
+                            </Style>
+                        </DataGridTextColumn.HeaderStyle>
+                    </DataGridTextColumn>
+
+                    <!-- Category Column -->
+                    <DataGridTextColumn Header="Category"
+                                        Binding="{Binding Category}"
+                                        Width="130"
+                                        ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}">
+                        <DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="DataGridColumnHeader"
+                                   BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
+                                <Setter Property="FontWeight"
+                                        Value="SemiBold" />
+                            </Style>
+                        </DataGridTextColumn.HeaderStyle>
+                    </DataGridTextColumn>
+
+                    <!-- Price Column -->
+                    <DataGridTextColumn Header="Price"
+                                        Binding="{Binding FormattedPrice}"
+                                        Width="100"
+                                        CellStyle="{StaticResource DataGridCellCenterStyle}">
+                        <DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="DataGridColumnHeader"
+                                   BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
+                                <Setter Property="FontWeight"
+                                        Value="SemiBold" />
+                                <Setter Property="HorizontalContentAlignment"
+                                        Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.HeaderStyle>
+                    </DataGridTextColumn>
+
+                    <!-- Stock Quantity Column -->
+                    <DataGridTextColumn Header="Stock"
+                                        Binding="{Binding StockQuantity}"
+                                        Width="80"
+                                        CellStyle="{StaticResource DataGridCellCenterStyle}">
+                        <DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="DataGridColumnHeader"
+                                   BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
+                                <Setter Property="FontWeight"
+                                        Value="SemiBold" />
+                                <Setter Property="HorizontalContentAlignment"
+                                        Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.HeaderStyle>
+                    </DataGridTextColumn>
+
+                    <!-- Stock Status Column -->
+                    <DataGridTemplateColumn Header="Status"
+                                            Width="120">
+                        <DataGridTemplateColumn.HeaderStyle>
+                            <Style TargetType="DataGridColumnHeader"
+                                   BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
+                                <Setter Property="FontWeight"
+                                        Value="SemiBold" />
+                                <Setter Property="HorizontalContentAlignment"
+                                        Value="Center" />
+                            </Style>
+                        </DataGridTemplateColumn.HeaderStyle>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border Background="{Binding StockStatusColor}"
+                                        CornerRadius="12"
+                                        Padding="8,4"
+                                        HorizontalAlignment="Center">
+                                    <TextBlock Text="{Binding StockStatus}"
+                                               FontSize="11"
+                                               FontWeight="SemiBold"
+                                               Foreground="White" />
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!-- Total Value Column -->
+                    <DataGridTextColumn Header="Total Value"
+                                        Binding="{Binding FormattedTotalValue}"
+                                        Width="110"
+                                        CellStyle="{StaticResource DataGridCellCenterStyle}">
+                        <DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="DataGridColumnHeader"
+                                   BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
+                                <Setter Property="FontWeight"
+                                        Value="SemiBold" />
+                                <Setter Property="HorizontalContentAlignment"
+                                        Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.HeaderStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </materialDesign:Card>
+
+        <!-- Empty State -->
+        <StackPanel Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Margin="16">
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">
+                    <Setter Property="Visibility"
+                            Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding FilteredProductsCount}"
+                                     Value="0">
+                            <Setter Property="Visibility"
+                                    Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
+
+            <materialDesign:PackIcon Kind="PackageVariant"
+                                     Width="64"
+                                     Height="64"
+                                     Foreground="#BDBDBD"
+                                     HorizontalAlignment="Center"
+                                     Margin="0,0,0,16" />
+            <TextBlock Text="No inventory items found"
+                       FontSize="18"
+                       FontWeight="SemiBold"
+                       Opacity="0.7"
+                       HorizontalAlignment="Center" />
+            <TextBlock Text="Try adjusting your search or filters"
+                       FontSize="14"
+                       Opacity="0.5"
+                       HorizontalAlignment="Center"
+                       Margin="0,4,0,0" />
+        </StackPanel>
+    </Grid>
+
+</UserControl>

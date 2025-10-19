@@ -1,0 +1,266 @@
+<UserControl x:Class="StorePOS.Client.Wpf.MVVM.Views.Dialogs.SaleDetailsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:StorePOS.Client.Wpf.Converters"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+
+    <UserControl.Resources>
+        <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+    </UserControl.Resources>
+    
+    <Border Background="{DynamicResource MaterialDesignPaper}"
+            CornerRadius="8"
+            Padding="16">
+        <ScrollViewer VerticalScrollBarVisibility="Hidden" MaxHeight="500">
+            <StackPanel>
+                <!-- Header Icon -->
+                <materialDesign:PackIcon Kind="ReceiptTextOutline"
+                                        Width="48"
+                                        Height="48"
+                                        Foreground="{DynamicResource SecondaryHueMidBrush}"
+                                        HorizontalAlignment="Center"
+                                        Margin="0,0,0,12"/>
+
+                <!-- Title -->
+                <TextBlock Text="Sale Details"
+                          Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                          HorizontalAlignment="Center"
+                          FontWeight="SemiBold"
+                          Margin="0,0,0,16"/>
+
+                <!-- Sale Info Section -->
+                <Border Background="{DynamicResource MaterialDesignDivider}"
+                        CornerRadius="4"
+                        Padding="12"
+                        Margin="0,0,0,12">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Sale Number -->
+                        <TextBlock Grid.Row="0" Grid.Column="0" 
+                                  Text="Sale #:"
+                                  Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                  Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                  Margin="0,0,12,6"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1"
+                                  Text="{Binding SaleNumber}"
+                                  Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                  FontWeight="Medium"
+                                  Margin="0,0,0,6"/>
+
+                        <!-- Date -->
+                        <TextBlock Grid.Row="1" Grid.Column="0"
+                                  Text="Date:"
+                                  Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                  Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                  Margin="0,0,12,6"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1"
+                                  Text="{Binding SaleDate}"
+                                  Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                  Margin="0,0,0,6"/>
+
+                        <!-- Cashier -->
+                        <TextBlock Grid.Row="2" Grid.Column="0"
+                                  Text="Cashier:"
+                                  Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                  Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                  Margin="0,0,12,6"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1"
+                                  Text="{Binding Cashier}"
+                                  Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                  Margin="0,0,0,6"/>
+
+                        <!-- Customer -->
+                        <TextBlock Grid.Row="3" Grid.Column="0"
+                                  Text="Customer:"
+                                  Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                  Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                  Margin="0,0,12,6"/>
+                        <TextBlock Grid.Row="3" Grid.Column="1"
+                                  Text="{Binding Customer}"
+                                  Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                  Margin="0,0,0,6"/>
+
+                        <!-- Payment Method -->
+                        <TextBlock Grid.Row="4" Grid.Column="0"
+                                  Text="Payment:"
+                                  Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                  Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                  Margin="0,0,12,0"/>
+                        <TextBlock Grid.Row="4" Grid.Column="1"
+                                  Text="{Binding PaymentMethod}"
+                                  Style="{StaticResource MaterialDesignBody1TextBlock}"/>
+                    </Grid>
+                </Border>
+
+                <!-- Items Section -->
+                <TextBlock Text="Items"
+                          Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
+                          FontWeight="SemiBold"
+                          Margin="0,0,0,8"/>
+
+                <ItemsControl ItemsSource="{Binding Items}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="{DynamicResource MaterialDesignDivider}"
+                                    CornerRadius="4"
+                                    Padding="12,8"
+                                    Margin="0,0,0,6">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!-- Product Name -->
+                                    <TextBlock Grid.Row="0" Grid.Column="0"
+                                              Text="{Binding ProductName}"
+                                              Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                              FontWeight="Medium"
+                                              TextWrapping="Wrap"/>
+
+                                    <!-- Line Total -->
+                                    <TextBlock Grid.Row="0" Grid.Column="1"
+                                              Text="{Binding FormattedLineTotal}"
+                                              Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                              FontWeight="SemiBold"
+                                              Margin="8,0,0,0"/>
+
+                                    <!-- Quantity and Price -->
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                                              Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                              Foreground="{DynamicResource MaterialDesignBodyLight}">
+                                        <Run Text="Qty: "/>
+                                        <Run Text="{Binding Quantity}"/>
+                                        <Run Text=" × "/>
+                                        <Run Text="{Binding FormattedUnitPrice}"/>
+                                    </TextBlock>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- Totals Section -->
+                <Border Background="{DynamicResource MaterialDesignDivider}"
+                        CornerRadius="4"
+                        Padding="12"
+                        Margin="0,12,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Subtotal -->
+                        <TextBlock Grid.Row="0" Grid.Column="0"
+                                  Text="Subtotal:"
+                                  Style="{StaticResource MaterialDesignBody2TextBlock}"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1"
+                                  Text="{Binding FormattedSubtotal}"
+                                  Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                  Margin="8,0,0,0"/>
+
+                        <!-- Tax -->
+                        <TextBlock Grid.Row="1" Grid.Column="0"
+                                  Text="Tax:"
+                                  Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                  Margin="0,4,0,0"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1"
+                                  Text="{Binding FormattedTax}"
+                                  Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                  Margin="8,4,0,0"/>
+
+                        <!-- Separator -->
+                        <Separator Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                                  Margin="0,8"/>
+
+                        <!-- Total -->
+                        <TextBlock Grid.Row="3" Grid.Column="0"
+                                  Text="Total:"
+                                  Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                                  FontWeight="SemiBold"/>
+                        <TextBlock Grid.Row="3" Grid.Column="1"
+                                  Text="{Binding FormattedTotal}"
+                                  Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                                  FontWeight="Bold"
+                                  Foreground="{DynamicResource PrimaryHueMidBrush}"
+                                  Margin="8,0,0,0"/>
+
+                        <!-- Payment Details -->
+                        <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
+                                   Margin="0,8,0,0">
+                            <Grid Margin="0,0,0,2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0"
+                                          Text="Paid:"
+                                          Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                          Foreground="{DynamicResource MaterialDesignBodyLight}"/>
+                                <TextBlock Grid.Column="1"
+                                          Text="{Binding FormattedPaid}"
+                                          Style="{StaticResource MaterialDesignCaptionTextBlock}"/>
+                            </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0"
+                                          Text="Change:"
+                                          Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                          Foreground="{DynamicResource MaterialDesignBodyLight}"/>
+                                <TextBlock Grid.Column="1"
+                                          Text="{Binding FormattedChange}"
+                                          Style="{StaticResource MaterialDesignCaptionTextBlock}"/>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Notes Section (if exists) -->
+                <Border Background="#FFF3E0"
+                        CornerRadius="4"
+                        Padding="12,8"
+                        Margin="0,12,0,0"
+                        Visibility="{Binding Notes, Converter={StaticResource StringToVisibilityConverter}}">
+                    <StackPanel>
+                        <TextBlock Text="Notes"
+                                  Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                  FontWeight="SemiBold"
+                                  Foreground="#E65100"
+                                  Margin="0,0,0,4"/>
+                        <TextBlock Text="{Binding Notes}"
+                                  Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                  TextWrapping="Wrap"
+                                  Foreground="#E65100"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Border>
+    
+</UserControl>

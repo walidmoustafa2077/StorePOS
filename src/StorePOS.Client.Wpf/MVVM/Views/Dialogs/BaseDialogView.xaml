@@ -1,0 +1,59 @@
+<UserControl x:Class="StorePOS.Client.Wpf.MVVM.Views.Dialogs.BaseDialogView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:converters="clr-namespace:StorePOS.Client.Wpf.Converters">
+
+    <UserControl.Resources>
+        <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Title -->
+        <TextBlock Grid.Row="0"
+                   Text="{Binding Title}"
+                   Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                   HorizontalAlignment="Center"
+                   Margin="8,0,8,8"
+                   Visibility="{Binding Title, Converter={StaticResource StringToVisibilityConverter}}" />
+
+        <!-- Content Area (for additional content if needed) -->
+        <ContentPresenter Grid.Row="2"
+                          Content="{Binding Content}"
+                          Margin="8,8" />
+
+        <!-- Button Panel - Hidden when using custom content -->
+        <StackPanel Grid.Row="3"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Margin="0,8,0,0"
+                    Visibility="{Binding PrimaryButtonText, Converter={StaticResource StringToVisibilityConverter}}">
+
+            <!-- Optional Secondary Button -->
+            <Button Style="{StaticResource MaterialDesignOutlinedButton}"
+                    Content="{Binding SecondaryButtonText}"
+                    Command="{Binding SecondaryButtonCommand}"
+                    Margin="0,0,16,0"
+                    MinWidth="120"
+                    Padding="16,8"
+                    Visibility="{Binding SecondaryButtonText, Converter={StaticResource StringToVisibilityConverter}}" />
+
+            <!-- Primary Button -->
+            <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                    Content="{Binding PrimaryButtonText}"
+                    Command="{Binding PrimaryButtonCommand}"
+                    MinWidth="120"
+                    Padding="16,8"
+                    IsDefault="True" />
+
+        </StackPanel>
+    </Grid>
+
+</UserControl>
